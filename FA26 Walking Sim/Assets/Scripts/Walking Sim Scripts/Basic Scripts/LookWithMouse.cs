@@ -10,8 +10,8 @@ public class LookWithMouse : MonoBehaviour
     
     // pitch is rotation around the horizontal x axis (tilting up and down)
     float pitch = 0f;
-    public float minimumPitch = -40f;
-    public float maximumPitch = 20f;
+    public float minimumPitch = -60f;
+    public float maximumPitch = 60f;
     // we can tune the sensitivity in the Inspector!
     public float pitchSensitivity = 2f;
 
