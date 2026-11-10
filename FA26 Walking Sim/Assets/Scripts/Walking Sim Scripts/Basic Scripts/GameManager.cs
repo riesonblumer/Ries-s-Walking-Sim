@@ -106,7 +106,7 @@ public class GameManager : MonoBehaviour
             if (canPlayerRestart)
             {
                 // reload the current scene
-                SceneManager.LoadScene(1);
+                SceneManager.LoadScene(0);
             }
             else if (canPlayerReturnToMainMenu)
             {
