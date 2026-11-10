@@ -1,38 +1,36 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
+using UnityEngine.PlayerLoop;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("End Screens / Restart")]
     public GameObject endScreenBackground;
     public GameObject endScreenLoseMessage;
     public GameObject endScreenWinMessage;
-
+    // how many coins player has to collect to win
+    public int coinRequirement = 1;
     bool canPlayerRestart;
     bool canPlayerReturnToMainMenu;
 
+    [Header("Player State")]
+    public TextMeshProUGUI timeText;
+    float timePassed;
     // how many coins we've collected
     public int coinCount;
-
+    // reference to the text on screen showing our coinCount
+    public TextMeshProUGUI coinCountText;
     // player lives
     public int startingPlayerLives = 3;
     int currentPlayerLives = 3;
-
+    public TextMeshProUGUI livesText;
     // Assign these references in Inspector
     public Transform respawnLocation;
     public GameObject player;
-    // how many coins player has to collect before something happens
-    public int coinRequirement = 1;
-    public int[] coinRequirements;
 
-    // reference to our door we need to open, assign in Inspector
-    public GameObject door;
-
-    // reference to the text on screen showing our coinCount
-    public TextMeshProUGUI coinCountText;
-
+    [Header("Audio")]
     // reference to a sound effect
     public AudioClip coinCollectSound;
 
@@ -53,44 +51,56 @@ public class GameManager : MonoBehaviour
         // increment our coin count
         // coinCount = coinCount + 1;
         // adding 1 to our coin count
-        coinCountText.gameObject.SetActive(true);
         coinCount++;
 
-        // display the new coin count to the screen
-        //coinCountText.text = "Coins: " + coinCount.ToString();
-        coinCountText.text = "Coins: " + coinCount.ToString();
+        if (coinCountText != null)
+        {
+            coinCountText.gameObject.SetActive(true);
+
+            // display the new coin count to the screen
+            //coinCountText.text = "Coins: " + coinCount.ToString();
+            coinCountText.text = "Coins: " + coinCount.ToString();
+        }
 
         if (coinCount >= coinRequirement)
         {
-            // open the door
-            //door.SetActive(false);
-
             // win message
-            endScreenBackground.SetActive(true);
-            endScreenWinMessage.SetActive(true);
+            if (endScreenBackground != null) endScreenBackground.SetActive(true);
+            if (endScreenWinMessage != null) endScreenWinMessage.SetActive(true);
             canPlayerReturnToMainMenu = true;
         }
     }
 
+    // you'll have to call this function whenever the player should lose a life!
     public void LoseLife()
     {
         // decrement how many lives the player has
         currentPlayerLives--;
 
+        if (livesText != null)
+        {
+            livesText.gameObject.SetActive(true);
+            livesText.text = "Lives: " + currentPlayerLives.ToString();
+        }
+
         if (currentPlayerLives <= 0)
         {
-            endScreenBackground.SetActive(true);
-            endScreenLoseMessage.SetActive(true);
+            if (endScreenBackground != null) endScreenBackground.SetActive(true);
+            if (endScreenLoseMessage != null) endScreenLoseMessage.SetActive(true);
             canPlayerRestart = true;
-
+        }
+        else
+        {
             // respawn
-            //currentPlayerLives = startingPlayerLives;
-            //player.transform.position = respawnLocation.position;
+            player.transform.position = respawnLocation.position;
         }
     }
 
     private void Update()
     {
+        // Note: for this to work, you'll need two scenes in your build settings
+        // At index 0, you'll have your main menu scene
+        // At index 1, you'll have your game scene
         if (Input.GetKeyDown(KeyCode.Return))
         {
             if (canPlayerRestart)
@@ -102,6 +112,19 @@ public class GameManager : MonoBehaviour
             {
                 SceneManager.LoadScene(0);
             }
+        }
+
+        if (canPlayerRestart || canPlayerReturnToMainMenu) return;
+
+        timePassed += Time.deltaTime;
+
+        if (timeText != null)
+        {
+            timeText.text = "Time: " + timePassed;
+        }
+        else
+        {
+            timeText.gameObject.SetActive(false);
         }
     }
 }

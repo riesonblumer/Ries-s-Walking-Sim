@@ -23,7 +23,7 @@ public class Jump : MonoBehaviour
 
     public void CheckForJump()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && isPlayerGrounded)
         {
             rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
         }

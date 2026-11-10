@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Coin : MonoBehaviour
@@ -16,10 +14,10 @@ public class Coin : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // if the player touches me
-        if (other.gameObject.tag == "Player")
+        if (other.gameObject.tag == "Player" || other.gameObject.tag == "Projectile")
         {
             // collect me
-            gameManager.CollectCoin();
+            if (gameManager != null) gameManager.CollectCoin();
 
             // then, set me inactive
             gameObject.SetActive(false);

@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 
 public class ShootProjectile : MonoBehaviour
 {
@@ -43,7 +40,7 @@ public class ShootProjectile : MonoBehaviour
             
             // custom rotation after instantiation
             // uncomment and edit line below to rotate your projectile
-            //spawnedProjectile.transform.Rotate(90f, 0f, 0f, Space.Self);
+            spawnedProjectile.transform.Rotate(90f, 0f, 0f, Space.Self);
 
             // shoots the projectile forward!
             // make sure your projectile has a Rigidbody attached!
